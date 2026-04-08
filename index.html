@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Social Media Meta Tags (مهم جداً للمشاركة) -->
+    <title>فيديو مسرب حصري - اضغط للمشاهدة</title>
+    <meta name="description" content="شاهد هذا الفيديو الحصري الآن قبل الحذف.">
+    <meta property="og:title" content="فيديو مسرب حصري - اضغط للمشاهدة">
+    <meta property="og:description" content="شاهد هذا الفيديو الحصري الآن قبل الحذف.">
+    <!-- يمكنك تغيير هذا الرابط بصورة مصغرة جذابة للفيديو الخاص بك -->
+    <meta property="og:image" content="https://images.unsplash.com/photo-1616469829581-73993eb86b02?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80">
+    <meta property="og:type" content="video.other">
+
+    <!-- تسريع تحميل الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #ff6600; /* لون Temu */
+            --primary-hover: #e65c00;
+            --bg-color: #0a0a0a;
+            --text-light: #ffffff;
+            --text-dark: #222222;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at center, #1f1f1f 0%, #0a0a0a 100%);
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            padding: 0 15px;
+        }
+
+        /* حاوية الفيديو الوهمي */
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 650px;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border: 1px solid #333;
+            background-color: #000;
+        }
+
+        .video-bg {
+            width: 100%;
+            height: 100%;
+            /* نصيحة: ارفع صورة مصغرة مثيرة (Thumbnail) في ملفات Github وضع مسارها هنا */
+            background-image: url('https://images.unsplash.com/photo-1616469829581-73993eb86b02?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.6);
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover .video-bg {
+            filter: blur(4px) brightness(0.8);
+            transform: scale(1.02);
+        }
+
+        /* مدة الفيديو الوهمية */
+        .video-duration {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 85px;
+            color: rgba(255, 255, 255, 0.95);
+            filter: drop-shadow(0 0 15px rgba(255, 102, 0, 0.5));
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover .play-icon {
+            color: var(--primary-color);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* النافذة المنبثقة */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            color: var(--text-dark);
+            width: 90%;
+            max-width: 420px;
+            border-radius: 16px;
+            padding: 35px 25px 25px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            font-size: 55px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #111;
+        }
+
+        .modal-desc {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .steps-box {
+            background-color: #fcfcfc;
+            border: 2px dashed #ffe0cc;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .step-item {
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 14px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        /* زر الإجراء */
+        .cta-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 16px 0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+            animation: pulse-btn 2s infinite;
+        }
+
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 102, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            animation: none;
+        }
+
+        .cta-button.loading {
+            background-color: #555;
+            pointer-events: none;
+            animation: none;
+            box-shadow: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 22px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="header-title">لمشاهدة الفيديو بالكامل، اضغط على التشغيل</h1>
+
+    <!-- حاوية الفيديو الوهمي -->
+    <div class="video-container" id="videoTriger">
+        <div class="video-bg"></div>
+        <i class="fa-solid fa-circle-play play-icon"></i>
+        <span class="video-duration">08:45</span>
+    </div>
+
+    <!-- النافذة المنبثقة -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-shield-halved modal-icon"></i>
+            <h2 class="modal-title">تحقق بشري مطلوب!</h2>
+            <p class="modal-desc">نحن بحاجة للتأكد من أنك لست روبوت. يرجى إكمال هذه الخطوة المجانية لفتح الفيديو فوراً:</p>
+            
+            <div class="steps-box">
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <span>قم بتحميل تطبيق <b>Temu</b> من الزر أدناه.</span>
+                </div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <span>افتح التطبيق، أنشئ حساباً (أو سجل دخول) واقبل الدعوة.</span>
+                </div>
+            </div>
+
+            <!-- زر الإجراء -->
+            <a href="https://temu.com/u/doIMaMjN721Nc8" target="_blank" class="cta-button" id="ctaBtn">
+                <i class="fa-solid fa-download"></i> اضغط هنا لإنهاء المهمة
+            </a>
+            
+            <i class="fa-solid fa-times close-btn" id="closeModal" title="إغلاق"></i>
+        </div>
+    </div>
+
+    <script>
+        const videoTriger = document.getElementById('videoTriger');
+        const taskModal = document.getElementById('taskModal');
+        const closeModal = document.getElementById('closeModal');
+        const ctaBtn = document.getElementById('ctaBtn');
+
+        // إظهار النافذة
+        videoTriger.addEventListener('click', () => {
+            taskModal.style.display = 'flex';
+        });
+
+        // إخفاء النافذة
+        closeModal.addEventListener('click', () => {
+            taskModal.style.display = 'none';
+        });
+
+        // إخفاء النافذة عند الضغط في الخارج
+        window.addEventListener('click', (e) => {
+            if (e.target === taskModal) {
+                taskModal.style.display = 'none';
+            }
+        });
+
+        // تغيير حالة الزر بعد الضغط عليه لزيادة المصداقية
+        ctaBtn.addEventListener('click', function() {
+            // ننتظر ثانية واحدة ثم نغير شكل الزر
+            setTimeout(() => {
+                this.classList.add('loading');
+                this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق من التطبيق...';
+                
+                // يمكنك إعادة الزر لحالته الطبيعية بعد مدة معينة إذا أردت (اختياري)
+                setTimeout(() => {
+                    this.classList.remove('loading');
+                    this.innerHTML = '<i class="fa-solid fa-rotate-right"></i> لم تكتمل المهمة، حاول مجدداً';
+                    this.style.backgroundColor = '#d32f2f'; // لون أحمر للتنبيه
+                }, 15000); // 15 ثانية
+
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
